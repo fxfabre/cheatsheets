@@ -1,0 +1,5 @@
+## Monitoring, log reader, log analysis ##
+
+https://www.splunk.com/
+
+https://sentry.io/
