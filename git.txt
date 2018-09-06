@@ -1,0 +1,22 @@
+Merge origin/master to current branch :
+	git fetch origin
+	git merge origin/master
+
+Annuler le dernier commit, en gardant les modif en local
+	git reset --soft HEAD^
+Annuler un commit (appliquer le commit inverse) :
+	git revert 444b1cffxxxxxxxxx
+
+
+git stash list
+	Liste tous les stash existant
+git stash push -m "message"
+	Stash tous les fichiers suivis dans un nouveau stash
+git stash push -m "message" -- path/to/file/to/include
+	pathspec must be relative to the repository root, not to your current working dir. 
+git stash apply $stash_id
+	Applique le stash en le gardant
+git stash pop $stash_id
+	Applique le stash et le supprime
+git stash drop $stash_id
+	supprime le stash
