@@ -1,0 +1,22 @@
+https://toucantoco.com/en/tech-blog/tech/python-performance-optimization
+
+
+Requiert PyCharm pro !!
+
+## External tools :
+
+#### Yappi : Yet Another Python Profiler, but this time support Multithread/CPU time profiling
+pip install yappi
+
+#### vmprof
+pip install vmprof
+
+Il faut aussi un serveur spécifique vmprof :
+```
+$ cd /tmp
+$ git clone https://github.com/vmprof/vmprof-server.git
+$ cd vmprof-server
+$ docker build -t vmprof-server .
+$ mkdir -p $PWD/data
+$ docker run --rm -ti -p 8000:8000 -v $PWD/data:/data vmprof-server
+```

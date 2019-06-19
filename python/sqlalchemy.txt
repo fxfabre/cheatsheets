@@ -1,0 +1,83 @@
+Sqlalchemy
+
+sources :
+- http://aosabook.org/en/sqlalchemy.html
+- https://docs.sqlalchemy.org/en/13/orm/tutorial.html
+- https://docs.sqlalchemy.org/en/13/core/reflection.html
+- https://docs.sqlalchemy.org/en/13/core/metadata.html
+- https://alembic.sqlalchemy.org/en/latest/tutorial.html
+- https://docs.sqlalchemy.org/en/13/core/types.html
+- https://sqlalchemy-utils.readthedocs.io/en/latest/database_helpers.html
+
+
+probleme : "object relational impedance mismatch" a résoudre (TODO : a expliquer)
+
+SQLAlchemy n'est pas une lib qui masque la structure d'une DB relationnelle, mais un toolkit qui permet de simplifier son utilisation, en étant plus haut niveau.
+
+```
+engine = create_engine("postgresql://user:pw@host/dbname")
+conn = engine.connect()
+result = engine.execute("select * from table")
+print result.fetchall()
+conn.close()
+```
+
+Core layer : dbapi intégration, génération des requetes SAL, schema management.
+ORM layer : object relationnal mapper. Couche d'abstraction , surcouche de la Core layer. Contient les object MetaData, Table, select (qu'est ce que c'est ?) et ResultProxy
+
+Clair découpage ORM / core :
+- Permet plus de souplesse, peut utiliser celui que l'on veut.
+- Mais pertes de performances : plus d'étapes nécessaires pour faire la même chose. Solution partielle : utiliser l'interpreteur Pypy, permet d'éviter des allers-retours entre python et le C ?
+
+
+MetaData : pour représenter une collection de Table.
+Table = Columns + Constraints
+SQLBuilder : génération automatique de la requete SQL, adapté à la base.
+
+from sqlalchemy.sql import table, column, select
+user = table('user', column('id'), column('name'))
+stmt = select([user.c.id]).where(user.c.name=='ed')
+
+Au dessus, la valeur litterale 'ed' est remplacée par un ? (a confirmer !)
+
+Compilation : transformation des instruction python en texte SQL :
+- La class SQLCompiler gère les instructions SELECT, INSERT, UPDATE, and DELETE, qui sont de type DQL (data query language) and DML (data manipulation language).
+- La class DDLCompiler gère les CREATE et DROP de type DDL (data definition language)
+
+Declarative mapping :
+class User(Base):
+    __tablename__ = 'user'
+    id = Column(Integer, primary_key=True)
+
+
+result = session.query(User).filter(User.username == 'ed').all()
+
+from sqlalchemy.orm import Session
+session = Session(engine)
+query = session.query(User)
+
+
+Reflexion : construction de l'objet Table à partir de la structure de la base de données :
+    table = Table('table_name', meta, autoload=True, autoload_with=engine)
+    my_view = Table("some_view", metadata, autoload=True)
+
+Reflecting all tables :
+    meta = MetaData()
+    meta.reflect(bind=someengine)
+    users_table = meta.tables['users']
+
+
+Gestion des ALTER TABLE pour faire des évolutions de la base :
+- Suivre le tutorial alembic
+- Generation du fichier d'upgrade / revert : alembic revision -m "file_test"
+- Exécution du fichier : alembic upgrade head || alembic upgrade ae1027a6acf
+- Visualisation des requetes SQL exécutées : alembic upgrade ae1027a6acf --sql
+
+
+
+
+Metadata:
+    - create_all() creates foreign key constraints between tables usually inline with the table definition itself, and for this reason it also generates the tables in order of their dependency. There are options to change this behavior such that ALTER TABLE is used instead.
+    - 
+
+
