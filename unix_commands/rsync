@@ -1,0 +1,19 @@
+rsync
+
+Attention aux / a la fin du chemin : rsync -av /src/foo /dest est équivalent a rsync -av /src/foo/ /dest/foo
+
+get: 	rsync -avuzb --exclude '*~' samba:samba/ .
+put: 	rsync -Cavuzb . samba:samba/
+
+rsync -az -e ssh --delete ~ftp/pub/samba nimbus:"~ftp/pub/tridge"
+
+-c, --checksum    	skip based on checksum, not mod-time & size
+-a, --archive       archive mode; same as -rlptgoD (no -H)
+						recursive copy-symlinks preserve-permissions-time-group-owner-device-and-specials-files
+-r, --recursive     recurse into directories
+-b, --backup        make backups (see --suffix & --backup-dir)
+-u, --update        skip files that are newer on the receiver
+-t, --times         preserve times
+-n, --dry-run       show what would have been transferred
+--remove-source-files   sender removes synchronized files (non-dir)
+--progress              show progress during transfer

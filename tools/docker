@@ -1,0 +1,17 @@
+## Docker
+
+docker pull image_name:tag
+
+docker run -p 8080:8080
+
+docker logs --follow $docker_id
+
+nettoyer son docker en local et regagner de la place
+    docker ps -qa --no-trunc --filter "status=exited"| xargs docker rm
+    docker images --filter "dangling=true" -q --no-trunc | xargs docker rmi
+    docker images | grep "none" | awk '/ / { print $3 }' | xargs docker rmi
+    docker volume ls -qf dangling=true | xargs  docker volume rm
+
+## Ctop
+ctop provides a concise and condensed overview of real-time metrics for multiple containers.
+https://github.com/bcicen/ctop

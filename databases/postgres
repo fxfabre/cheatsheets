@@ -1,0 +1,20 @@
+psql -h localhost -p 5432 -U postgres $db_name
+
+\l : list databases
+
+\c $db_name : use $db_name
+
+
+Afficher les tables d'une base :
+SELECT tablename FROM pg_tables; : lister les tables d'une base
+SELECT tablename FROM pg_tables WHERE tablename !~ '^pg_' AND tablename !~ '^sql_';
+
+SELECT *
+FROM pg_catalog.pg_tables
+WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema';
+
+\dt : afficher les tables
+
+
+\d+ $table_name : description d'une table
+
