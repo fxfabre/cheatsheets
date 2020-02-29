@@ -1,4 +1,9 @@
-## Docker
+## cheatcheat
+
+https://medium.com/@gdiener/how-to-build-a-smaller-docker-image-76779e18d48a
+docker squash : https://blog.codacy.com/five-ways-to-slim-your-docker-images/
+Multi stage build : https://vsupalov.com/build-docker-image-clone-private-repo-ssh-key/
+
 
 docker pull image_name:tag
 
@@ -12,6 +17,30 @@ nettoyer son docker en local et regagner de la place
     docker images | grep "none" | awk '/ / { print $3 }' | xargs docker rmi
     docker volume ls -qf dangling=true | xargs  docker volume rm
 
+docker save my_image | xz > my_image.tar.xz
+xz -cd my_image.tar.xz | sudo docker load
+
+
 ## Ctop
 ctop provides a concise and condensed overview of real-time metrics for multiple containers.
 https://github.com/bcicen/ctop
+
+
+Tips :
+- The Docker client sends the entire "build context" to the Docker daemon. That build context (by default) is the entire directory the Dockerfile is in (so, the entire rpms tree). You can setup a .dockerignore file to get Docker to ignore some files. You might want to experiment with it.
+
+- Tous les chemins doivent être définis en relatif, à partir du chemin courant (ou chemin donné en dernier parametre au docker build ?). Uniquement les sous dossiers sont accessibles. 
+
+
+
+## Docker
+
+Docker est un logiciel qui permet de démarrer un OS "propre", de lancer dans un container une application, en définissant tout ce qu'on veut y mettre.
+On va ainsi partir d'un noyau linux, puis rajouter les quelques applications dont on a besoin.
+
+Pour lancer un containter, il faut d'abord creer une image docker. Cela se fait le plus souvent à partir d'un Dockerfile.
+
+Les containers ont ainsi plusieurs états possibles :
+- démarré : running. On les liste avec la cmd `docker ps`
+- arrété : Il a déjà été lancé, a été arrété, mes les donnnées sont toujours dispo. On les list avec `docker ps -a`
+- starting : en cours de demarrage. On peut voir les logs, mais pas se connecter dessus
