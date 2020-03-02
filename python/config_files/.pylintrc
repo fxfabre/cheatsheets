@@ -1,0 +1,15 @@
+[MASTER]
+
+[MESSAGES]
+#disable=C,R,I,broad-except,unsubscriptable-object
+disable=C0114
+
+[REPORTS]
+reports=no
+score=yes
+#output-format=parseable
+
+[FORMAT]
+max-line-length=100
+
+
